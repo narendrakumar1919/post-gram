@@ -17,13 +17,14 @@ module.exports = [
     method: "POST",
     url: "post",
     preHandler: [
-      (request, reply, next) => {
-        request.query = helpers.validateInputs(
+      async (request, reply) => {
+        const validated = helpers.validateInputs(
           PostInputSchema.addPost,
           request.body,
           reply
         );
-        next();
+        if (!validated) return reply;
+        request.body = validated;
       },
     ],
     handler: PostController.addPost,
@@ -32,13 +33,14 @@ module.exports = [
     method: "PUT",
     url: "post/:post_id",
     preHandler: [
-      (request, reply, next) => {
-        request.query = helpers.validateInputs(
+      async (request, reply) => {
+        const validated = helpers.validateInputs(
           PostInputSchema.addPost,
           request.body,
           reply
         );
-        next();
+        if (!validated) return reply;
+        request.query = validated;
       },
     ],
     handler: PostController.editPostById,
@@ -52,13 +54,14 @@ module.exports = [
     method: "POST",
     url: "post/:post_id/rating",
     preHandler: [
-      (request, reply, next) => {
-        request.query = helpers.validateInputs(
+      async (request, reply) => {
+        const validated = helpers.validateInputs(
           PostInputSchema.ratePost,
           request.body,
           reply
         );
-        next();
+        if (!validated) return reply;
+        request.query = validated;
       },
     ],
     handler: PostController.ratePostById,

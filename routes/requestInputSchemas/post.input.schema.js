@@ -25,7 +25,6 @@ const description = Joi.string()
   });
 
 const user_name = Joi.string()
-  .required()
   .max(20)
   .messages({
     "string.base": `User name ${validation_errors.string_base}`,
@@ -37,7 +36,8 @@ const user_name = Joi.string()
 exports.addPost = Joi.object()
   .keys({
     description,
-  })
+    user_name
+  }).required()
   .messages({
     "object.base": validation_errors.body,
     "any.required": validation_errors.body,

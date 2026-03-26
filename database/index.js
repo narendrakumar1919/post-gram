@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 
 exports.mongoConnection = mongoose
-  .connect(global.MONGO_DB_CONNECTION_STRING, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-  })
+  .connect(global.MONGO_DB_CONNECTION_STRING)
   .then(() => {
     console.log("-->> MongoDB connected successfully");
   })

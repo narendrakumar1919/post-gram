@@ -89,7 +89,7 @@ exports.editPostById = (request, reply) => {
   models.post
     .updateOne({ _id: request.params.post_id }, request.body)
     .then((success) => {
-      if (success.n) {
+      if (success.matchedCount) {
         return helpers.sendSuccessResponse(
           messages.common_reply_messages.success_post_updated,
           {},
@@ -119,7 +119,7 @@ exports.deletePostById = (request, reply) => {
   models.post
     .deleteOne({ _id: request.params.post_id })
     .then((success) => {
-      if (success.n) {
+      if (success.deletedCount) {
         return helpers.sendSuccessResponse(
           messages.common_reply_messages.success_post_deleted,
           {},

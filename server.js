@@ -4,7 +4,7 @@ require("./database");
 
 const fastify = require("fastify")({ logger: true });
 
-const corsOptions = {
+fastify.register(require("@fastify/cors"), {
   origin: "*",
   methods: ["PUT", "POST", "DELETE", "GET"],
   allowedHeaders: [
@@ -15,20 +15,15 @@ const corsOptions = {
     "authorization",
     "Accept-Encoding",
   ],
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-fastify.register(require("fastify-cors"), {
-  corsOptions,
 });
 
-fastify.register(require("fastify-helmet"), {
+fastify.register(require("@fastify/helmet"), {
   hsts: { maxAge: 63072000, includeSubDomains: true, preload: true },
   frameguard: { action: "deny" },
   referrerPolicy: { policy: "same-origin" },
 });
 
-fastify.register(require("fastify-formbody"));
+fastify.register(require("@fastify/formbody"));
 
 // Declare routes
 const routes = require("./routes");
@@ -43,9 +38,13 @@ fastify.get("/", (request, reply) => {
 });
 
 // Run the server!
-fastify.listen(3000, (err) => {
-  if (err) {
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000, host: "0.0.0.0" });
+  } catch (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-});
+};
+
+start();
